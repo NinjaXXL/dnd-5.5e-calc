@@ -5,20 +5,20 @@ export function initActionBuilder() {
   const btn = document.getElementById("addActionBtn");
 
   btn.addEventListener("click", () => {
-    const action = {
+    state.actions.push({
       name: "New Action",
       dice: "1d8",
       modifier: 0
-    };
+    });
 
-    state.actions.push(action);
     renderActions();
+    window.updateUI(); // 👈 IMPORTANT
   });
 
   function renderActions() {
     container.innerHTML = "";
 
-    state.actions.forEach((action, index) => {
+    state.actions.forEach((action) => {
       const div = document.createElement("div");
 
       div.innerHTML = `
