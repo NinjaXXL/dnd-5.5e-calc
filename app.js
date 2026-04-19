@@ -3,7 +3,14 @@ import { initGlobalSettings } from "./ui/globalSettings.js";
 import { initActionBuilder } from "./ui/actionBuilder.js";
 import { renderResults } from "./ui/renderer.js";
 
-// Initialize UI
+function updateUI() {
+  renderResults();
+}
+
+// expose globally so UI modules can call it
+window.updateUI = updateUI;
+
+// init UI
 initGlobalSettings();
 initActionBuilder();
-renderResults();
+updateUI();
