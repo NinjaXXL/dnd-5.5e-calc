@@ -12,22 +12,53 @@ export function initActionBuilder() {
     });
 
     renderActions();
-    window.updateUI(); // 👈 IMPORTANT
+    window.updateUI(); // refresh results
   });
 
   function renderActions() {
     container.innerHTML = "";
 
-    state.actions.forEach((action) => {
-      const div = document.createElement("div");
+    state.actions.forEach((action, index) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "action";
 
-      div.innerHTML = `
-        <input value="${action.name}" />
-        <input value="${action.dice}" />
-        <input type="number" value="${action.modifier}" />
-      `;
+      // Name input
+      const nameInput = document.createElement("input");
+      nameInput.value = action.name;
 
-      container.appendChild(div);
+      nameInput.addEventListener("input", (e) => {
+        action.name = e.target.value;
+        window.updateUI();
+      });
+
+      // Dice input
+      const diceInput = document.createElement("input");
+      diceInput.value = action.dice;
+
+      diceInput.addEventListener("input", (e) => {
+        action.dice = e.target.value;
+        window.updateUI();
+      });
+
+      // Modifier input
+      const modInput = document.createElement("input");
+      modInput.type = "number";
+      modInput.value = action.modifier;
+
+      modInput.addEventListener("input", (e) => {
+        action.modifier = Number(e.target.value);
+        window.updateUI();
+      });
+
+      // Append all inputs
+      wrapper.appendChild(nameInput);
+      wrapper.appendChild(diceInput);
+      wrapper.appendChild(modInput);
+
+      container.appendChild(wrapper);
     });
   }
+
+  // initial render
+  renderActions();
 }
