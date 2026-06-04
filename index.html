@@ -2,41 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>5e Damage Calculator</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO & social -->
+  <meta name="description"
+    content="D&D 5e combat calculator — damage per round, hit probability, and critical analysis with full feature support." />
+  <meta name="theme-color" content="#0b0d15" />
+
+  <!-- iOS PWA chrome -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="D&D Calculator" />
+
+  <!-- Emoji favicon — no separate file needed -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>" />
+
+  <title>D&D Combat Calculator</title>
+
+  <!-- Fonts: Cinzel (headings/numbers) + Crimson Pro (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header>
-    <h1>Damage Calculator</h1>
-  </header>
+  <div id="app">
 
-  <main>
+    <!--
+      App header — sticky, populated by Renderer._renderHeader().
+      Contains the title, subtitle, and IO action buttons.
+    -->
+    <header id="app-header" role="banner"></header>
 
-    <!-- Global Settings -->
-    <section id="global-settings">
-      <h2>Global Settings</h2>
-      <div id="globalSettingsContainer"></div>
-    </section>
+    <!--
+      Two-column layout:
+        Left  (sections-column) — config-generated input panels, scrolls freely
+        Right (results-column)  — live calculation output, sticky on desktop
+      On mobile (≤900px) the columns stack vertically and results move to top.
+    -->
+    <div class="app-layout">
 
-    <!-- Action Builder -->
-    <section id="actions">
-      <h2>Actions</h2>
+      <main
+        id="sections-container"
+        class="sections-column"
+        role="main"
+        aria-label="Calculator inputs"
+      ></main>
 
-      <div id="actionBuilderContainer"></div>
+      <aside
+        id="results-panel"
+        class="results-column"
+        role="complementary"
+        aria-label="Calculation results"
+        aria-live="polite"
+        aria-atomic="true"
+      ></aside>
 
-      <button id="addActionBtn">+ Add Action</button>
-    </section>
+    </div>
 
-    <!-- Results -->
-    <section id="results">
-      <h2>Results</h2>
-      <div id="resultsContainer"></div>
-    </section>
+  </div><!-- /#app -->
 
-  </main>
+  <!--
+    Script loading order is critical — each module depends on those above it.
 
-  <script type="module" src="app.js"></script>
+    utils        — pure helpers, no deps
+    dice         — dice math (uses Utils)
+    state        — state management (uses Utils)
+    components   — UI factories (uses Utils, State)
+    calculations — DPR engine (uses Utils, Dice)
+    config       — CONFIG constant (no runtime deps)
+    renderer     — UI generation (uses Utils, State, Components, Config)
+    app          — entry point (uses all of the above)
+  -->
+  <script src="js/utils.js"></script>
+  <script src="js/dice.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/calculations.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
